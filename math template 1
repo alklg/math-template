@@ -1,0 +1,33 @@
+// gcd
+int gcd(int a, int b) {return b ? gcd(b, a % b) : a;}
+
+//exgcd
+int exgcd(int a, int b, int &x, int &y)
+{
+	if(!b)
+	{
+		x = 1, y = 0;
+		return a;
+	}
+	
+	int d = exgcd(b, a % b, y, x);
+	y -= a / b * x;
+	return d;
+}
+
+//O(n) to get primes
+void get_primes(int n)
+{
+	for(int i = 2; i <= n; i++) 
+	{
+		if(!st[i]) primes[cnt++] = i;
+		for(int j = 0; primes[j] <= n / i; j++)
+		{
+			st[primes[j] * i] = true;
+			if(i % primes[j] == 0) break;
+		}
+	}
+}
+
+//if(ax % b == 1) calculate(x) residue equation as well
+exgcd(a, b, x, y); x = (x + b) % b;
