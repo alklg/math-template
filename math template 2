@@ -1,0 +1,61 @@
+//matrix multiplication
+const int N = 3;
+int n, m;
+
+void qmul(int c[], int a[], int b[][N])
+{
+    int temp[N] = {0};
+
+    for(int i = 0; i < N; i++)
+        for(int j = 0; j < N; j++)
+            temp[i] = (temp[i] + (LL)(a[j]) * b[j][i]) % m;
+
+    memcpy(c, temp, sizeof temp);
+}
+
+void qmul2(int c[][N], int a[][N], int b[][N])
+{
+    int temp[N][N] = {0};
+
+    for(int i = 0; i < N; i++)
+        for(int j = 0; j < N; j++)
+            for(int k = 0; k < N; k++)
+                temp[i][j] = (temp[i][j] + (LL)a[i][k] * b[k][j]) % m;
+
+    memcpy(c, temp, sizeof temp);
+}
+
+void Pow(int a[][N], int b[][N], int x){//第一个放A,第二个放f，第三个放次数 
+    while(x){
+        if(x&1){
+            qmul2(b, a, b);
+        }
+        qmul2(a, a, a);
+        x>>=1;
+    } 
+}
+
+int main()
+{
+    int f1[N] = {1, 1, 1};//fib(1), fib(2), sum(1);
+    //matrix(n) = matrix(1) * (A ^ (n - 1))
+    int A[N][N] = 
+    {
+        {0, 1, 0},
+        {1, 1, 1},
+        {0, 0, 1}
+    };
+
+    cin >> n >> m;
+    n--;
+    while(n)//qmi
+    {
+        if(n & 1) qmul(f1, f1, A);
+        n >>= 1;
+        qmul2(A, A, A);
+    }
+
+    int ans = f1[2];
+    cout << ans << endl;
+    return 0;
+}
